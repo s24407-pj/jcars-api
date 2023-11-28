@@ -1,4 +1,4 @@
-package edu.pjatk.jcarsapi.user;
+package edu.pjatk.jcarsapi.model;
 
 import jakarta.persistence.*;
 

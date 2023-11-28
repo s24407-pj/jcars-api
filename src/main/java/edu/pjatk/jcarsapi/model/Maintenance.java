@@ -1,6 +1,5 @@
-package edu.pjatk.jcarsapi.maintenance;
+package edu.pjatk.jcarsapi.model;
 
-import edu.pjatk.jcarsapi.car.Car;
 import jakarta.persistence.*;
 
 @Entity

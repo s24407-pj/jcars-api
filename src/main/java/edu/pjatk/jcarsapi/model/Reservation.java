@@ -1,7 +1,5 @@
-package edu.pjatk.jcarsapi.reservation;
+package edu.pjatk.jcarsapi.model;
 
-import edu.pjatk.jcarsapi.car.Car;
-import edu.pjatk.jcarsapi.user.User;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
