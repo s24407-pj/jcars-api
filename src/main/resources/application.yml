@@ -2,10 +2,10 @@ spring:
   datasource:
     username: admin
     password: password
-    url: jdbc:postgresql://localhost:5332/jcars
+    url: jdbc:mysql://localhost:3306/jcars
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
 springdoc:
   api-docs:
     path: /api-docs

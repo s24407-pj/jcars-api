@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class CarController {
@@ -21,18 +22,15 @@ public class CarController {
     @GetMapping("/cars")
     public ResponseEntity<List<Car>> getAllCars()
     {
-        return new ResponseEntity<>(carService.getAllCars(), HttpStatus.OK);
+        return new ResponseEntity<>(carService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/cars/{id}")
     public ResponseEntity<Car> getCarById(@PathVariable Integer id) {
-        Car car = carService.getCarById(id);
+        Optional<Car> car = carService.getById(id);
 
-        if (car != null) {
-            return new ResponseEntity<>(car, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return car.map(ResponseEntity::ok)
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/cars")
@@ -42,7 +40,7 @@ public class CarController {
        //     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         //}
 
-        carService.saveCar(car);
+        carService.save(car);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -50,13 +48,13 @@ public class CarController {
     @PutMapping("/cars/{id}")
     public ResponseEntity<Car> updateCar(@PathVariable Integer id, @RequestBody Car car) {
 
-        if (carService.getCarById(id) == null) {
+        if (carService.getById(id).isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        car.setId(id);
+      //  car.setId(id);
 
-        carService.saveCar(car);
+        carService.save(car);
 
         return new ResponseEntity<>(car, HttpStatus.OK);
     }
@@ -64,11 +62,11 @@ public class CarController {
     @DeleteMapping("/cars/{id}")
     public ResponseEntity<Void> deleteCar(@PathVariable Integer id) {
 
-        if (carService.getCarById(id) == null) {
+        if (carService.getById(id).isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        carService.deleteCarById(id);
+        carService.deleteById(id);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

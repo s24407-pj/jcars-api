@@ -2,45 +2,28 @@ package edu.pjatk.jcarsapi.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
+@Table(name = "car")
 public class Car {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Transient
-    private Brand brand;
-    @Transient
-    private Model model;
-    @Enumerated(EnumType.STRING)
-    private BodyType bodyType;
-    private Float pricePerDay;
-    @Enumerated(EnumType.STRING)
-    private CarCategory carCategory;
-    private Integer seats;
-    private Integer horsePower;
-    @Enumerated(EnumType.STRING)
-    private FuelType fuelType;
-    private Integer yearOfProduction;
-    private Integer mileage;
-    private Boolean isAvailable;
-    private Localization localization;
 
-    public Model getModel() {
-        return model;
-    }
+    @ManyToOne
+    @JoinColumn(name = "model_id", nullable = false)
+    private CarModel model;
 
-    public Brand getBrand() {
-        return brand;
-    }
+    @Column(nullable = false)
+    private Integer year;
 
-    public Integer getId() {
-        return id;
-    }
+    @Column(name = "registration_plate", nullable = false)
+    private String registrationPlate;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    @Column(name = "rental_price", nullable = false)
+    private BigDecimal rentalPrice;
 
-
+    @Column(nullable = false)
+    private Boolean available;
 }
