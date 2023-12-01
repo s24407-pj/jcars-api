@@ -2,7 +2,6 @@ package edu.pjatk.jcarsapi.model;
 
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
@@ -23,23 +22,26 @@ public class Car {
     private String registrationPlate;
 
     @Column(name = "rental_price", nullable = false)
-    private BigDecimal rentalPrice;
+    private Integer rentalPrice;
 
     @Column(name = "available", nullable = false)
     private Boolean isAvailable;
     @Column(nullable = false)
     private Integer milage;
+    @Column(name = "image_url", nullable = false)
+    private String imageUrl;
 
-    public Car() {
-    }
-
-    public Car(CarModel model, Integer year, String registrationPlate, BigDecimal rentalPrice, Boolean isAvailable, Integer milage) {
+    public Car(Integer id, CarModel model, Integer year, String registrationPlate, Integer rentalPrice, Boolean isAvailable, Integer milage, String imageUrl) {
         this.model = model;
         this.year = year;
         this.registrationPlate = registrationPlate;
         this.rentalPrice = rentalPrice;
         this.isAvailable = isAvailable;
         this.milage = milage;
+    }
+
+    public Car() {
+
     }
 
     public Integer getId() {
@@ -70,11 +72,11 @@ public class Car {
         this.registrationPlate = registrationPlate;
     }
 
-    public BigDecimal getRentalPrice() {
+    public Integer getRentalPrice() {
         return rentalPrice;
     }
 
-    public void setRentalPrice(BigDecimal rentalPrice) {
+    public void setRentalPrice(Integer rentalPrice) {
         this.rentalPrice = rentalPrice;
     }
 
@@ -94,17 +96,12 @@ public class Car {
         this.milage = milage;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Car car = (Car) o;
-        return Objects.equals(id, car.id) && Objects.equals(model, car.model) && Objects.equals(year, car.year) && Objects.equals(registrationPlate, car.registrationPlate) && Objects.equals(rentalPrice, car.rentalPrice) && Objects.equals(isAvailable, car.isAvailable) && Objects.equals(milage, car.milage);
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, model, year, registrationPlate, rentalPrice, isAvailable, milage);
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     @Override
@@ -117,6 +114,20 @@ public class Car {
                 ", rentalPrice=" + rentalPrice +
                 ", isAvailable=" + isAvailable +
                 ", milage=" + milage +
+                ", imageUrl='" + imageUrl + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Car car = (Car) o;
+        return Objects.equals(id, car.id) && Objects.equals(model, car.model) && Objects.equals(year, car.year) && Objects.equals(registrationPlate, car.registrationPlate) && Objects.equals(rentalPrice, car.rentalPrice) && Objects.equals(isAvailable, car.isAvailable) && Objects.equals(milage, car.milage) && Objects.equals(imageUrl, car.imageUrl);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, model, year, registrationPlate, rentalPrice, isAvailable, milage, imageUrl);
     }
 }
