@@ -31,17 +31,29 @@ public class Car {
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
-    public Car(Integer id, CarModel model, Integer year, String registrationPlate, Integer rentalPrice, Boolean isAvailable, Integer milage, String imageUrl) {
+    private String description;
+
+    public Car(Integer id, CarModel model, Integer year, String registrationPlate, Integer rentalPrice, Boolean isAvailable, Integer milage, String imageUrl,String description) {
         this.model = model;
         this.year = year;
         this.registrationPlate = registrationPlate;
         this.rentalPrice = rentalPrice;
         this.isAvailable = isAvailable;
         this.milage = milage;
+        this.imageUrl = imageUrl;
+        this.description = description;
     }
 
     public Car() {
 
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Integer getId() {
@@ -105,6 +117,19 @@ public class Car {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Car car = (Car) o;
+        return Objects.equals(id, car.id) && Objects.equals(model, car.model) && Objects.equals(year, car.year) && Objects.equals(registrationPlate, car.registrationPlate) && Objects.equals(rentalPrice, car.rentalPrice) && Objects.equals(isAvailable, car.isAvailable) && Objects.equals(milage, car.milage) && Objects.equals(imageUrl, car.imageUrl) && Objects.equals(description, car.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, model, year, registrationPlate, rentalPrice, isAvailable, milage, imageUrl, description);
+    }
+
+    @Override
     public String toString() {
         return "Car{" +
                 "id=" + id +
@@ -115,19 +140,7 @@ public class Car {
                 ", isAvailable=" + isAvailable +
                 ", milage=" + milage +
                 ", imageUrl='" + imageUrl + '\'' +
+                ", description='" + description + '\'' +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Car car = (Car) o;
-        return Objects.equals(id, car.id) && Objects.equals(model, car.model) && Objects.equals(year, car.year) && Objects.equals(registrationPlate, car.registrationPlate) && Objects.equals(rentalPrice, car.rentalPrice) && Objects.equals(isAvailable, car.isAvailable) && Objects.equals(milage, car.milage) && Objects.equals(imageUrl, car.imageUrl);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, model, year, registrationPlate, rentalPrice, isAvailable, milage, imageUrl);
     }
 }
