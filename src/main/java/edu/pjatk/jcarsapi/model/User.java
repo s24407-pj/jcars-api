@@ -26,6 +26,10 @@ public class User {
 
     private String address;
 
+
+    @Column(name = "has_driving_license")
+    private Boolean hasDrivingLicense = false;
+
     public Integer getId() {
         return id;
     }
@@ -80,5 +84,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Boolean getHasDrivingLicense() {
+        return hasDrivingLicense;
+    }
+
+    public void setHasDrivingLicense(Boolean hasDrivingLicense) {
+        this.hasDrivingLicense = hasDrivingLicense;
     }
 }
