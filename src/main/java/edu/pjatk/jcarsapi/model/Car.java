@@ -24,6 +24,11 @@ public class Car {
     @Column(name = "rental_price", nullable = false)
     private BigDecimal rentalPrice;
 
+    @Column(name = "is_available", nullable = false)
+    private Boolean isAvailable;
     @Column(nullable = false)
-    private Boolean available;
+    private Integer milage;
+
+    public Car() {
+    }
 }
