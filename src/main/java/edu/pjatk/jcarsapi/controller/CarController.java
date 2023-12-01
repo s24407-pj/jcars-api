@@ -1,5 +1,6 @@
 package edu.pjatk.jcarsapi.controller;
 
+import edu.pjatk.jcarsapi.exception.ResourceNotFoundException;
 import edu.pjatk.jcarsapi.model.Car;
 import edu.pjatk.jcarsapi.service.CarService;
 import org.springframework.http.HttpStatus;
@@ -29,8 +30,11 @@ public class CarController {
     public ResponseEntity<Car> getCarById(@PathVariable Integer id) {
         Optional<Car> car = carService.getById(id);
 
-        return car.map(ResponseEntity::ok)
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        if (car.isPresent()) {
+            return ResponseEntity.ok(car.get());
+        } else {
+            throw new ResourceNotFoundException("Car not found");
+        }
     }
 
     @PostMapping("/cars")
