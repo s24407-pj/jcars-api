@@ -1,10 +1,10 @@
-package edu.pjatk.jcarsapi.model.dto;
+package edu.pjatk.jcarsapi.model.response;
 
-public class LoginRes {
+public class Login {
     private String email;
     private String token;
 
-    public LoginRes(String email, String token) {
+    public Login(String email, String token) {
         this.email = email;
         this.token = token;
     }

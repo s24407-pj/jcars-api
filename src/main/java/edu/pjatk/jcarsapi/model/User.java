@@ -9,25 +9,26 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "first_name", nullable = false)
+    @Column(name = "first_name", nullable = false, length = 32)
     private String firstName;
 
-    @Column(name = "last_name", nullable = false)
+    @Column(name = "last_name", nullable = false, length = 32)
     private String lastName;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 32)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 128)
     private String password;
 
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", length = 32)
     private String phoneNumber;
 
+    @Column(length = 64)
     private String address;
 
 
-    @Column(name = "has_driving_license")
+    @Column(name = "has_driving_license", nullable = false)
     private Boolean hasDrivingLicense = false;
 
     public Integer getId() {

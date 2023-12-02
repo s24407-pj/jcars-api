@@ -18,14 +18,14 @@ public class Car {
     @Column(nullable = false)
     private Integer year;
 
-    @Column(name = "registration_plate", nullable = false)
+    @Column(name = "registration_plate", nullable = false, length = 16)
     private String registrationPlate;
 
     @Column(name = "rental_price", nullable = false)
     private Integer rentalPrice;
 
     @Column(name = "available", nullable = false)
-    private Boolean isAvailable;
+    private Boolean isAvailable = false;
     @Column(nullable = false)
     private Integer milage;
     @Column(name = "image_url", nullable = false)

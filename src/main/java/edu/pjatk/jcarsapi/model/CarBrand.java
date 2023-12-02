@@ -11,7 +11,7 @@ public class CarBrand {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, length = 32)
     private String name;
 
     public CarBrand(Integer id, String name) {

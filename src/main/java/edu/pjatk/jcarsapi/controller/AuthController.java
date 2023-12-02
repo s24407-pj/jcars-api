@@ -1,8 +1,6 @@
 package edu.pjatk.jcarsapi.controller;
 
-import edu.pjatk.jcarsapi.model.User;
-import edu.pjatk.jcarsapi.model.dto.LoginReq;
-import edu.pjatk.jcarsapi.model.dto.LoginRes;
+import edu.pjatk.jcarsapi.model.response.Login;
 import edu.pjatk.jcarsapi.service.UserService;
 import edu.pjatk.jcarsapi.util.JwtUtil;
 import org.springframework.http.HttpStatus;
@@ -14,7 +12,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -31,7 +28,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth")
-    public ResponseEntity<LoginRes> login(@RequestBody LoginReq loginReq) {
+    public ResponseEntity<Login> login(@RequestBody edu.pjatk.jcarsapi.model.request.Login loginReq) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginReq.getEmail(), loginReq.getPassword())
@@ -39,7 +36,7 @@ public class AuthController {
 
             UserDetails user = userService.loadUserByUsername(authentication.getName());
             String token = jwtUtil.createToken(user);
-            LoginRes loginRes = new LoginRes(user.getUsername(), token);
+            Login loginRes = new Login(user.getUsername(), token);
 
             return ResponseEntity.ok(loginRes);
         } catch (BadCredentialsException e) {

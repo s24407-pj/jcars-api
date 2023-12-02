@@ -1,10 +1,10 @@
-package edu.pjatk.jcarsapi.model.dto;
+package edu.pjatk.jcarsapi.model.request;
 
-public class LoginReq {
+public class Login {
     private String email;
     private String password;
 
-    public LoginReq(String email, String password) {
+    public Login(String email, String password) {
         this.email = email;
         this.password = password;
     }
