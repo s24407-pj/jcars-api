@@ -1,6 +1,6 @@
 package edu.pjatk.jcarsapi.config;
 
-import edu.pjatk.jcarsapi.service.CustomUserDetailsService;
+import edu.pjatk.jcarsapi.service.UserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,9 +18,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig  {
 
-    private final CustomUserDetailsService customUserDetailsService;
+    private final UserDetailsService customUserDetailsService;
 
-    public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
+    public SecurityConfig(UserDetailsService customUserDetailsService) {
         this.customUserDetailsService = customUserDetailsService;
 
     }
@@ -44,7 +44,6 @@ public class SecurityConfig  {
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .httpBasic(Customizer.withDefaults())
                 .build();
     }
 
