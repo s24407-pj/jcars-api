@@ -21,6 +21,9 @@ public class Car {
     @Column(name = "registration_plate", nullable = false, length = 16)
     private String registrationPlate;
 
+    @Column(name = "deposit", nullable = false)
+    private Integer deposit;
+
     @Column(name = "rental_price", nullable = false)
     private Integer rentalPrice;
 
@@ -33,10 +36,12 @@ public class Car {
 
     private String description;
 
-    public Car(Integer id, CarModel model, Integer year, String registrationPlate, Integer rentalPrice, Boolean isAvailable, Integer milage, String imageUrl,String description) {
+    public Car(Integer id, CarModel model, Integer year, String registrationPlate, Integer deposit, Integer rentalPrice, Boolean isAvailable, Integer milage, String imageUrl, String description) {
+        this.id = id;
         this.model = model;
         this.year = year;
         this.registrationPlate = registrationPlate;
+        this.deposit = deposit;
         this.rentalPrice = rentalPrice;
         this.isAvailable = isAvailable;
         this.milage = milage;
@@ -46,6 +51,14 @@ public class Car {
 
     public Car() {
 
+    }
+
+    public Integer getDeposit() {
+        return deposit;
+    }
+
+    public void setDeposit(Integer deposit) {
+        this.deposit = deposit;
     }
 
     public String getDescription() {

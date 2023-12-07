@@ -11,18 +11,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
+@RequestMapping("/jcars")
 public class CarController {
 
     private final CarService carService;
 
-    @Autowired
     public CarController(CarService carService) {
         this.carService = carService;
     }
+
+
     @GetMapping("/cars")
-    public ResponseEntity<List<Car>> getAllCars()
-    {
+    public ResponseEntity<List<Car>> getAllCars() {
         return new ResponseEntity<>(carService.getAll(), HttpStatus.OK);
     }
 
@@ -41,7 +43,7 @@ public class CarController {
     public ResponseEntity<?> addCar(@RequestBody Car car) {
 
         //if (car.getName() == null || car.getCategory() == null) {
-       //     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        //     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         //}
 
         carService.save(car);
@@ -56,7 +58,7 @@ public class CarController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-      //  car.setId(id);
+        //  car.setId(id);
 
         carService.save(car);
 
