@@ -1,35 +1,28 @@
 package edu.pjatk.jcarsapi.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "days_limit")
-public class DaysLimit {
-
+public class Attributes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     private Integer id;
 
     @NotNull
     private String name;
 
-    @NotNull
-    private Integer car_limit;
-
-
-
-    public DaysLimit() {
-    }
-
-    public DaysLimit(Integer id, String name, Integer car_limit) {
+    public Attributes(Integer id, String name) {
         this.id = id;
         this.name = name;
-        this.car_limit = car_limit;
+    }
+
+    public Attributes() {
     }
 
     public Integer getId() {
@@ -46,13 +39,5 @@ public class DaysLimit {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Integer getCar_limit() {
-        return car_limit;
-    }
-
-    public void setCar_limit(Integer car_limit) {
-        this.car_limit = car_limit;
     }
 }

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RequestMapping("/limit")
 @RestController
 public class DaysLimitController {
 
@@ -20,7 +19,7 @@ public class DaysLimitController {
         this.days_limit_service = days_limit_service;
     }
 
-    @GetMapping(path = "/all")
+    @GetMapping(path = "/getlimits")
     public ResponseEntity<List<DaysLimit>> getAllLimits() {
         return new ResponseEntity<>(days_limit_service.getAllLimits(), HttpStatus.OK);
     }

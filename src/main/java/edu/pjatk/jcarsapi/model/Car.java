@@ -2,6 +2,7 @@ package edu.pjatk.jcarsapi.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -27,6 +28,9 @@ public class Car {
     @Column(name = "rental_price", nullable = false)
     private Integer rentalPrice;
 
+    @ManyToMany
+    private List<Attributes> attributes;
+
     @Column(name = "available", nullable = false)
     private Boolean isAvailable = false;
     @Column(nullable = false)
@@ -36,17 +40,26 @@ public class Car {
 
     private String description;
 
-    public Car(Integer id, CarModel model, Integer year, String registrationPlate, Integer deposit, Integer rentalPrice, Boolean isAvailable, Integer milage, String imageUrl, String description) {
+    public Car(Integer id, CarModel model, Integer year, String registrationPlate, Integer deposit, Integer rentalPrice, List<Attributes> attributes, Boolean isAvailable, Integer milage, String imageUrl, String description) {
         this.id = id;
         this.model = model;
         this.year = year;
         this.registrationPlate = registrationPlate;
         this.deposit = deposit;
         this.rentalPrice = rentalPrice;
+        this.attributes = attributes;
         this.isAvailable = isAvailable;
         this.milage = milage;
         this.imageUrl = imageUrl;
         this.description = description;
+    }
+
+    public List<Attributes> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(List<Attributes> attributes) {
+        this.attributes = attributes;
     }
 
     public Car() {
