@@ -1,10 +1,12 @@
 package edu.pjatk.jcarsapi.service;
 
+import edu.pjatk.jcarsapi.exception.ResourceNotFoundException;
 import edu.pjatk.jcarsapi.model.User;
 import edu.pjatk.jcarsapi.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,14 +37,17 @@ public class UserService {
         );
     }
 
-    public boolean verifyDrivingLicense(Integer id, String hash) {
-        Optional<User> user = userRepository.findById(id);
-       if (drivingLicenseService.checkDrivingLicense(hash) && user.isPresent()){
-           user.get().setHasDrivingLicense(true);
-           userRepository.save(user.get());
-           return true;
-       }
-       return false;
+    public Mono<Boolean> verifyDrivingLicense(Integer id, String hash) {
+        return userRepository.findById(id)
+                .map(user ->
+                        drivingLicenseService.checkDrivingLicense(hash)
+                                .doOnNext(isValid -> {
+                                    if (isValid) {
+                                        user.setHasDrivingLicense(true);
+                                        userRepository.save(user);
+                                    }
+                                })
+                ).orElse(Mono.error(new ResourceNotFoundException("User not found")));
     }
 
     public List<User> getAll() {
@@ -54,6 +59,6 @@ public class UserService {
     }
 
     public void deleteById(Integer id) {
-         userRepository.deleteById(id);
+        userRepository.deleteById(id);
     }
 }
