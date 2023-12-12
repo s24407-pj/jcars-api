@@ -23,7 +23,7 @@ public class DrivingLicenseService {
                 .build();
     }
 
-    public Mono<Boolean> checkDrivingLicense(String hash) {
+    public Boolean checkDrivingLicense(String hash) {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .queryParam("hashDanychWyszukiwania", hash)
@@ -44,7 +44,7 @@ public class DrivingLicenseService {
                             .get("wartosc")
                             .toString();
                     return value.equals("Wydany");
-                });
+                }).block();
     }
 }
 

@@ -37,18 +37,14 @@ public class UserService {
         );
     }
 
-    public Mono<Boolean> verifyDrivingLicense(Integer id, String hash) {
-        return userRepository.findById(id)
-                .map(user ->
-                        drivingLicenseService.checkDrivingLicense(hash)
-                                .doOnNext(isValid -> {
-                                    if (isValid) {
-                                        user.setHasDrivingLicense(true);
-                                        userRepository.save(user);
-                                    }
-                                })
-                ).orElse(Mono.error(new ResourceNotFoundException("User not found")));
+    public Boolean verifyDrivingLicense(Integer id, String hash) {
+        if( userRepository.existsById(id) && drivingLicenseService.checkDrivingLicense(hash)){
+            userRepository.updateHasDrivingLicenseById(true,id);
+            return true;
+        }
+        return false;
     }
+
 
     public List<User> getAll() {
         return userRepository.findAll();

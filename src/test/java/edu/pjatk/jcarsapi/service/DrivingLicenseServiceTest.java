@@ -48,7 +48,7 @@ class DrivingLicenseServiceTest {
                         .addHeader("Content-Type", "application/json")
                         .setResponseCode(200));
 
-        Boolean result = underTest.checkDrivingLicense("validHash").block();
+        Boolean result = underTest.checkDrivingLicense("validHash");
         assertTrue(result);
     }
 
@@ -61,7 +61,9 @@ class DrivingLicenseServiceTest {
                         .addHeader("Content-Type", "application/json")
                         .setResponseCode(200));
 
-        Boolean result = underTest.checkDrivingLicense("validHash").block();
+        Boolean result = underTest.checkDrivingLicense("validHash");
         assertFalse(result);
     }
+
+
 }

@@ -20,12 +20,10 @@ public class UserController {
     }
 
     @PostMapping("/users/{id}/license/{hash}")
-    Mono<ResponseEntity<Boolean>> verifyDrivingLicense(
+    ResponseEntity<Boolean> confirmLicense(
             @PathVariable Integer id,
             @PathVariable String hash) {
-        return userService.verifyDrivingLicense(id, hash)
-                .map(ResponseEntity::ok)
-                .defaultIfEmpty(ResponseEntity.notFound().build());
+       return new ResponseEntity<> (userService.verifyDrivingLicense(id,hash),HttpStatus.OK);
 
     }
 
