@@ -1,6 +1,7 @@
 package edu.pjatk.jcarsapi.controller;
 
-import edu.pjatk.jcarsapi.model.response.Login;
+import edu.pjatk.jcarsapi.model.request.LoginRequest;
+import edu.pjatk.jcarsapi.model.response.LoginResponse;
 import edu.pjatk.jcarsapi.service.UserService;
 import edu.pjatk.jcarsapi.util.JwtUtil;
 import org.springframework.http.HttpStatus;
@@ -28,15 +29,15 @@ public class AuthController {
     }
 
     @PostMapping("/auth")
-    public ResponseEntity<Login> login(@RequestBody edu.pjatk.jcarsapi.model.request.Login loginReq) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequestReq) {
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginReq.getEmail(), loginReq.getPassword())
+                    new UsernamePasswordAuthenticationToken(loginRequestReq.email(), loginRequestReq.password())
             );
 
             UserDetails user = userService.loadUserByUsername(authentication.getName());
             String token = jwtUtil.createToken(user);
-            Login loginRes = new Login(user.getUsername(), token);
+            LoginResponse loginRes = new LoginResponse(user.getUsername(), token);
 
             return ResponseEntity.ok(loginRes);
         } catch (BadCredentialsException e) {
