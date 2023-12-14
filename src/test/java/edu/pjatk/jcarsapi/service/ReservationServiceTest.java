@@ -2,6 +2,7 @@ package edu.pjatk.jcarsapi.service;
 
 import edu.pjatk.jcarsapi.model.*;
 import edu.pjatk.jcarsapi.repository.ReservationRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,7 +18,8 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ReservationServiceTest {
-
+    private Reservation dummyReservation1;
+    private Reservation dummyReservation2;
 
     @Mock
     private ReservationRepository reservationRepository;
@@ -25,13 +27,31 @@ class ReservationServiceTest {
     @InjectMocks
     private ReservationService underTest;
 
+    @BeforeEach
+    void setUp() {
+        Car car = new Car(
+                1,
+                new CarModel(1, "name", new CarBrand(1, "name")),
+                2022,
+                "ABC123",
+                500,
+                50,
+                List.of(new Attribute(1, "name"), new Attribute(2, "name2")),
+                true,
+                10000,
+                "https://dummy.com/car",
+                "This is a dummy car"
+        );
+        CarModel model = new CarModel(1, "name", new CarBrand(1, "name"));
+        User user = new User(1, "John", "Doe", "john.doe@example.com", "password123", "1234567890", "123 Sample Street", true);
+        dummyReservation1 = new Reservation(1, user, car, LocalDateTime.now(), LocalDateTime.MAX, Reservation.ReservationStatus.ACTIVE);
+        dummyReservation2 = new Reservation(2, user, car, LocalDateTime.now(), LocalDateTime.MAX, Reservation.ReservationStatus.CANCELED);
+    }
+
     @Test
     void getAll() {
-        CarModel dummyModel = new CarModel(1,"name",new CarBrand(1,"name"));
-        Car dummyCar = new Car(1, dummyModel, 2000, "ABC-123", 500, true, 100000, "https/test.com/image", "This is a test car");
-        User dummyUser = new User(1, "John", "Doe", "john.doe@example.com", "password123", "1234567890", "123 Sample Street", true);
-        Reservation reservation1 = new Reservation(1,dummyUser,dummyCar, LocalDateTime.now(),LocalDateTime.MAX, Reservation.ReservationStatus.ACTIVE);
-        Reservation reservation2 = new Reservation(2,dummyUser,dummyCar, LocalDateTime.now(),LocalDateTime.MAX, Reservation.ReservationStatus.CANCELED);
+        Reservation reservation1 = dummyReservation1;
+        Reservation reservation2 = dummyReservation2;
         List<Reservation> expectedReservations = List.of(reservation1, reservation2);
 
         when(reservationRepository.findAll()).thenReturn(expectedReservations);
@@ -44,10 +64,7 @@ class ReservationServiceTest {
 
     @Test
     void getById() {
-        CarModel dummyModel = new CarModel(1,"name",new CarBrand(1,"name"));
-        Car dummyCar = new Car(1, dummyModel, 2000, "ABC-123", 500, true, 100000, "https/test.com/image", "This is a test car");
-        User dummyUser = new User(1, "John", "Doe", "john.doe@example.com", "password123", "1234567890", "123 Sample Street", true);
-        Reservation expectedReservation = new Reservation(1,dummyUser,dummyCar, LocalDateTime.now(),LocalDateTime.MAX, Reservation.ReservationStatus.ACTIVE);
+        Reservation expectedReservation = dummyReservation1;
         int id = expectedReservation.getId();
         when(reservationRepository.findById(id)).thenReturn(Optional.of(expectedReservation));
 
@@ -59,10 +76,7 @@ class ReservationServiceTest {
 
     @Test
     void save() {
-        CarModel dummyModel = new CarModel(1,"name",new CarBrand(1,"name"));
-        Car dummyCar = new Car(1, dummyModel, 2000, "ABC-123", 500, true, 100000, "https/test.com/image", "This is a test car");
-        User dummyUser = new User(1, "John", "Doe", "john.doe@example.com", "password123", "1234567890", "123 Sample Street", true);
-        Reservation reservation = new Reservation(1,dummyUser,dummyCar, LocalDateTime.now(),LocalDateTime.MAX, Reservation.ReservationStatus.ACTIVE);
+        Reservation reservation = dummyReservation1;
 
         underTest.save(reservation);
 

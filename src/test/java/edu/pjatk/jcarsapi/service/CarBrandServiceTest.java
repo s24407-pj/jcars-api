@@ -20,10 +20,10 @@ import static org.mockito.Mockito.*;
 public class CarBrandServiceTest {
 
     @InjectMocks
-    CarBrandService underTest;
+    private CarBrandService underTest;
 
     @Mock
-    CarBrandRepository carBrandRepository;
+    private CarBrandRepository carBrandRepository;
 
     @Test
     void getAll() {
