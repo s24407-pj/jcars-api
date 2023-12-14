@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-public class Adds {
+public class Add {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +21,10 @@ public class Adds {
     @NotNull
     private Integer price;
 
-    public Adds() {
+    public Add() {
     }
 
-    public Adds(Integer id, String title, String description, Integer price) {
+    public Add(Integer id, String title, String description, Integer price) {
         this.id = id;
         this.title = title;
         this.description = description;

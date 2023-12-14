@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-public class Attributes {
+public class Attribute {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,12 +17,12 @@ public class Attributes {
     @NotNull
     private String name;
 
-    public Attributes(Integer id, String name) {
+    public Attribute(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Attributes() {
+    public Attribute() {
     }
 
     public Integer getId() {

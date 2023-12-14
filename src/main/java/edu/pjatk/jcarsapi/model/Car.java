@@ -29,7 +29,7 @@ public class Car {
     private Integer rentalPrice;
 
     @ManyToMany
-    private List<Attributes> attributes;
+    private List<Attribute> attributes;
 
     @Column(name = "available", nullable = false)
     private Boolean isAvailable = false;
@@ -40,7 +40,7 @@ public class Car {
 
     private String description;
 
-    public Car(Integer id, CarModel model, Integer year, String registrationPlate, Integer deposit, Integer rentalPrice, List<Attributes> attributes, Boolean isAvailable, Integer milage, String imageUrl, String description) {
+    public Car(Integer id, CarModel model, Integer year, String registrationPlate, Integer deposit, Integer rentalPrice, List<Attribute> attributes, Boolean isAvailable, Integer milage, String imageUrl, String description) {
         this.id = id;
         this.model = model;
         this.year = year;
@@ -54,11 +54,11 @@ public class Car {
         this.description = description;
     }
 
-    public List<Attributes> getAttributes() {
+    public List<Attribute> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<Attributes> attributes) {
+    public void setAttributes(List<Attribute> attributes) {
         this.attributes = attributes;
     }
 
