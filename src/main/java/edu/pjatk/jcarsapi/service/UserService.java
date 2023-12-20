@@ -1,8 +1,11 @@
 package edu.pjatk.jcarsapi.service;
 
 import edu.pjatk.jcarsapi.model.User;
+import edu.pjatk.jcarsapi.model.UserDetailsImpl;
 import edu.pjatk.jcarsapi.repository.UserRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -20,29 +23,16 @@ public class UserService {
         this.drivingLicenseService = drivingLicenseService;
     }
 
-    // Other service methods ...
 
-    // This method is extended to comply with Spring Security UserDetailsService interface
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
-
-        // Leveraging the built-in org.springframework.security.core.userdetails.User for UserDetails implementation
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                new ArrayList<>() // List of granted authorities, can be configured based on roles
-        );
-    }
 
     public boolean verifyDrivingLicense(Integer id, String hash) {
         Optional<User> user = userRepository.findById(id);
-       if (drivingLicenseService.checkDrivingLicense(hash) && user.isPresent()){
-           user.get().setHasDrivingLicense(true);
-           userRepository.save(user.get());
-           return true;
-       }
-       return false;
+        if (drivingLicenseService.checkDrivingLicense(hash) && user.isPresent()) {
+            user.get().setHasDrivingLicense(true);
+            userRepository.save(user.get());
+            return true;
+        }
+        return false;
     }
 
     public List<User> getAll() {
@@ -54,6 +44,6 @@ public class UserService {
     }
 
     public void deleteById(Integer id) {
-         userRepository.deleteById(id);
+        userRepository.deleteById(id);
     }
 }

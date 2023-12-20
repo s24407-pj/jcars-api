@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
 @SpringBootApplication
 public class JcarsApiApplication {
     public static void main(String[] args) {

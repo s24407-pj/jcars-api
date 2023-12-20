@@ -1,5 +1,6 @@
 package edu.pjatk.jcarsapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -10,6 +11,7 @@ public class CarBrand {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Integer id;
 
     @Column(name = "name", nullable = false, length = 32)

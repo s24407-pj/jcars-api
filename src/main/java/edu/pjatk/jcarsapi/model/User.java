@@ -2,6 +2,10 @@ package edu.pjatk.jcarsapi.model;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Entity
 @Table(name = "user")
 public class User {
@@ -27,9 +31,36 @@ public class User {
     @Column(length = 64)
     private String address;
 
-
     @Column(name = "has_driving_license", nullable = false)
     private Boolean hasDrivingLicense = false;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+
+    public User() {
+    }
+
+    public User(Integer id, String firstName, String lastName, String email, String password, String phoneNumber, String address, Boolean hasDrivingLicense) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.hasDrivingLicense = hasDrivingLicense;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
     public Integer getId() {
         return id;
