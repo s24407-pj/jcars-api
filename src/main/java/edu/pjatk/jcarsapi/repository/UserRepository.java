@@ -11,10 +11,9 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByEmail(String email);
-
     @Transactional
     @Modifying
     @Query("update User u set u.hasDrivingLicense = ?1 where u.id = ?2")
-    int updateHasDrivingLicenseById(@NonNull Boolean hasDrivingLicense, @NonNull Integer id);
+    void updateHasDrivingLicenseById(@NonNull Boolean hasDrivingLicense, @NonNull Integer id);
 
 }
