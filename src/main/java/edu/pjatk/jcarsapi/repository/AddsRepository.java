@@ -1,7 +1,7 @@
 package edu.pjatk.jcarsapi.repository;
 
-import edu.pjatk.jcarsapi.model.Adds;
+import edu.pjatk.jcarsapi.model.Add;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface AddsRepository extends JpaRepository<Adds, Integer> {
+public interface AddsRepository extends JpaRepository<Add, Integer> {
 }

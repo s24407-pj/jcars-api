@@ -4,6 +4,9 @@ cors:
   allowed-headers: "*"
   exposed-headers: "*"
 
+url:
+  driving-license-gov: "https://moj.gov.pl/nforms/api/UprawnieniaKierowcow/2.0.5/data/driver-permissions"
+
 spring:
   datasource:
     username: admin

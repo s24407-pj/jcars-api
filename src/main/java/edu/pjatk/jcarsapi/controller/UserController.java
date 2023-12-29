@@ -6,6 +6,7 @@ import edu.pjatk.jcarsapi.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,11 +20,11 @@ public class UserController {
     }
 
     @PostMapping("/users/{id}/license/{hash}")
-    ResponseEntity<Boolean> verifyDrivingLicense(
+    ResponseEntity<Boolean> confirmLicense(
             @PathVariable Integer id,
             @PathVariable String hash) {
-        Boolean isVerified = userService.verifyDrivingLicense(id, hash);
-        return ResponseEntity.ok().body(isVerified);
+       return new ResponseEntity<> (userService.verifyDrivingLicense(id,hash),HttpStatus.OK);
+
     }
 
     @GetMapping("/users")

@@ -125,4 +125,18 @@ public class User {
     public void setHasDrivingLicense(Boolean hasDrivingLicense) {
         this.hasDrivingLicense = hasDrivingLicense;
     }
+
+    public User(Integer id, String firstName, String lastName, String email, String password, String phoneNumber, String address, Boolean hasDrivingLicense) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.hasDrivingLicense = hasDrivingLicense;
+    }
+
+    public User() {
+    }
 }
