@@ -1,6 +1,6 @@
 package edu.pjatk.jcarsapi.service;
 
-import edu.pjatk.jcarsapi.model.Adds;
+import edu.pjatk.jcarsapi.model.Add;
 import edu.pjatk.jcarsapi.repository.AddsRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ public class AddsService {
     }
 
 
-    public List<Adds> getAllAdds() {
+    public List<Add> getAllAdds() {
         return addsRepository.findAll();
     }
 }

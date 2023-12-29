@@ -1,43 +1,50 @@
 package edu.pjatk.jcarsapi.service;
 
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
-//TODO wyjatki
+
+import java.util.function.Predicate;
+
 @Service
 public class DrivingLicenseService {
+
     private final WebClient webClient;
 
-    public DrivingLicenseService(WebClient.Builder webClientBuilder) {
-        String url = "https://moj.gov.pl/nforms/api/UprawnieniaKierowcow/2.0.5/data/driver-permissions";
-        this.webClient = webClientBuilder.baseUrl(url).build();
+    public DrivingLicenseService(@Value("${url.driving-license-gov}") String url) {
+        this.webClient = WebClient.builder()
+                .baseUrl(url)
+                .build();
     }
 
     public Boolean checkDrivingLicense(String hash) {
-        Mono<String> response = webClient.get()
+        return webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .queryParam("hashDanychWyszukiwania", hash)
                         .build())
+                .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(String.class);
-
-        String jsonString = response.block();
-        if (jsonString == null) {
-            System.out.println("Response is null");
-            return false;
-        }
-
-        JSONObject json = new JSONObject(jsonString);
-        String value = json
-                .getJSONObject("dokumentPotwierdzajacyUprawnienia")
-                .getJSONObject("stanDokumentu")
-                .getJSONObject("stanDokumentu")
-                .get("wartosc")
-                .toString();
-
-        return value.equals("Wydany");
-
+                .onStatus(HttpStatusCode::is4xxClientError, // replace method reference with lambda
+                        clientResponse -> Mono.error(new ResponseStatusException(
+                                HttpStatus.BAD_REQUEST, "Bad Request"
+                        )))
+                .bodyToMono(String.class)
+                .map(response -> {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String value = jsonObject
+                            .getJSONObject("dokumentPotwierdzajacyUprawnienia")
+                            .getJSONObject("stanDokumentu")
+                            .getJSONObject("stanDokumentu")
+                            .get("wartosc")
+                            .toString();
+                    return value.equals("Wydany");
+                }).block();
     }
 }
 

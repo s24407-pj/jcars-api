@@ -6,7 +6,6 @@ import edu.pjatk.jcarsapi.service.CarService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,10 +15,10 @@ public class CarController {
 
     private final CarService carService;
 
+
     public CarController(CarService carService) {
         this.carService = carService;
     }
-
 
     @GetMapping("/cars")
     public ResponseEntity<List<Car>> getAllCars() {

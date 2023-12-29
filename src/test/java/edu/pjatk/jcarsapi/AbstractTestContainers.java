@@ -1,13 +1,9 @@
-/*
 package edu.pjatk.jcarsapi;
 
-import org.flywaydb.core.Flyway;
-import org.junit.jupiter.api.BeforeAll;
 import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -16,7 +12,7 @@ import javax.sql.DataSource;
 @Testcontainers
 public abstract class AbstractTestContainers {
 
-    @BeforeAll
+    /*@BeforeAll
     static void beforeAll() {
         Flyway flyway = Flyway.configure().dataSource(
                 postgreSQLContainer.getJdbcUrl(),
@@ -24,39 +20,39 @@ public abstract class AbstractTestContainers {
                 postgreSQLContainer.getPassword()
         ).load();
         flyway.migrate();
-    }
+    }*/
 
     @Container
-    protected static final PostgreSQLContainer<?> postgreSQLContainer =
-            new PostgreSQLContainer<>("postgres:15.3")
-                    .withDatabaseName("trainingproject-dao-unit-test")
-                    .withUsername("michalf")
+    protected static final MySQLContainer<?> mySQLContainer =
+            new MySQLContainer<>("mysql:8.0")
+                    .withDatabaseName("jcars-test")
+                    .withUsername("admin")
                     .withPassword("password");
 
     @DynamicPropertySource
     private static void registerDataSourceProperties(DynamicPropertyRegistry registry) {
         registry.add(
                 "spring.datasource.url",
-                postgreSQLContainer::getJdbcUrl
+                mySQLContainer::getJdbcUrl
         );
         registry.add(
                 "spring.datasource.username",
-                postgreSQLContainer::getUsername
+                mySQLContainer::getUsername
         );
         registry.add(
                 "spring.datasource.password",
-                postgreSQLContainer::getPassword
+                mySQLContainer::getPassword
         );
     }
 
     private static DataSource getDataSource() {
         return DataSourceBuilder.create()
-                .driverClassName(postgreSQLContainer.getDriverClassName())
-                .url(postgreSQLContainer.getJdbcUrl())
-                .username(postgreSQLContainer.getUsername())
-                .password(postgreSQLContainer.getPassword())
+                .driverClassName(mySQLContainer.getDriverClassName())
+                .url(mySQLContainer.getJdbcUrl())
+                .username(mySQLContainer.getUsername())
+                .password(mySQLContainer.getPassword())
                 .build();
 
     }
 
-}*/
+}
