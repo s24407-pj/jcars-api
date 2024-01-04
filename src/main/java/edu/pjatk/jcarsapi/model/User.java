@@ -35,16 +35,18 @@ public class User {
     private Boolean hasDrivingLicense = false;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_verified", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "verified_id"))
+    private Verified verified;
+
 
     public User() {
     }
 
-    public User(Integer id, String firstName, String lastName, String email, String password, String phoneNumber, String address, Boolean hasDrivingLicense) {
-        this.id = id;
+    public User(String firstName, String lastName, String email, String password, String phoneNumber, String address, Boolean hasDrivingLicense, Set<Role> roles, Verified verified) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -52,6 +54,16 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.hasDrivingLicense = hasDrivingLicense;
+        this.roles = roles;
+        this.verified = verified;
+    }
+
+    public Verified getVerified() {
+        return verified;
+    }
+
+    public void setVerified(Verified verified) {
+        this.verified = verified;
     }
 
     public Set<Role> getRoles() {

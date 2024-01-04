@@ -4,6 +4,7 @@ import edu.pjatk.jcarsapi.model.Enums.ERoles;
 import edu.pjatk.jcarsapi.model.Role;
 import edu.pjatk.jcarsapi.model.User;
 import edu.pjatk.jcarsapi.model.UserDetailsImpl;
+import edu.pjatk.jcarsapi.model.Verified;
 import edu.pjatk.jcarsapi.model.request.SignupRequest;
 import edu.pjatk.jcarsapi.model.response.JwtResponse;
 import edu.pjatk.jcarsapi.model.response.Login;
@@ -64,13 +65,13 @@ public class AuthController {
 
             UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-            Login loginRes = new Login(userDetails.getEmail(), token);
+            /*Login loginRes = new Login(userDetails.getEmail(), token);*/
 
             List<String> roles = userDetails.getAuthorities().stream()
                     .map(item -> item.getAuthority())
                     .collect(Collectors.toList());
 
-            return ResponseEntity.ok(new JwtResponse(token, userDetails.getId(), userDetails.getEmail(), roles));
+            return ResponseEntity.ok(new JwtResponse(userDetails.getFirstname(), userDetails.getLastname(), userDetails.getAddress(), userDetails.getPhone(), token, userDetails.getId(), userDetails.getEmail(), roles,userDetails.getVerified()));
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(e.getMessage());
         }
@@ -109,6 +110,7 @@ public class AuthController {
                     }
                 });
             }
+            Verified verified = new Verified();
             User user1 = new User();
             user1.setFirstName(signupRequest.getFirstName());
             user1.setLastName(signupRequest.getLastName());
@@ -118,9 +120,10 @@ public class AuthController {
             user1.setPhoneNumber(signupRequest.getPhoneNumber());
             user1.setHasDrivingLicense(signupRequest.getHasDrivingLicense());
             user1.setRoles(roles);
+            user1.setVerified(verified);
             userRepository.save(user1);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
 
         return ResponseEntity.ok("Successfully registered!");
