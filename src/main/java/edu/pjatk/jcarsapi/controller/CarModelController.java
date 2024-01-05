@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -22,6 +23,22 @@ public class CarModelController {
     @GetMapping("/car-models")
     public ResponseEntity<List<CarModel>> getAllCarModels() {
         return new ResponseEntity<>(carModelService.getAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/car-models/brand/{id}")
+    public ResponseEntity<List<CarModel>> getAllCarModelsByBrand(@PathVariable Integer id) {
+
+        List<CarModel> carModels = carModelService.getAll();
+
+        List<CarModel> updateCarModels = new ArrayList<>();
+
+        carModels.forEach(carModel -> {
+            if (carModel.getBrand().getId().equals(id)) {
+                updateCarModels.add(carModel);
+            }
+        });
+
+        return new ResponseEntity<>(updateCarModels, HttpStatus.OK);
     }
 
     @DeleteMapping("/car-models/{id}")
