@@ -46,7 +46,8 @@ public class User {
     public User() {
     }
 
-    public User(String firstName, String lastName, String email, String password, String phoneNumber, String address, Boolean hasDrivingLicense, Set<Role> roles, Verified verified) {
+    public User(Integer id, String firstName, String lastName, String email, String password, String phoneNumber, String address, Boolean hasDrivingLicense, Set<Role> roles, Verified verified) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

@@ -1,30 +1,32 @@
 package edu.pjatk.jcarsapi.model.request.Reservation;
 
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDateTime;
 
 public class Reservation {
+    private Integer carId;
     private String address;
     private String carlicense;
     private String city;
     private String documentid;
     private String email;
-    private Date endDate;
+    private LocalDateTime endDate;
     private String firstname;
     private String message;
     private String nip;
-    private String personID;
+    private String personid;
     private String phone;
+    private String lastname;
     private String promotionCode;
-    private Date startDate;
+    private LocalDateTime startDate;
     private String zipcode;
-
-    private List<Adds> adds;
+    private Boolean cardPay;
+    private Double total;
 
     public Reservation() {
     }
 
-    public Reservation(String address, String carlicense, String city, String documentid, String email, Date endDate, String firstname, String message, String nip, String personID, String phone, String promotionCode, Date startDate, String zipcode, List<Adds> adds) {
+    public Reservation(Integer carId, String address, String carlicense, String city, String documentid, String email, LocalDateTime endDate, String firstname, String message, String nip, String personid, String phone, String lastname, String promotionCode, LocalDateTime startDate, String zipcode, Boolean cardPay, Double total) {
+        this.carId = carId;
         this.address = address;
         this.carlicense = carlicense;
         this.city = city;
@@ -34,12 +36,22 @@ public class Reservation {
         this.firstname = firstname;
         this.message = message;
         this.nip = nip;
-        this.personID = personID;
+        this.personid = personid;
         this.phone = phone;
+        this.lastname = lastname;
         this.promotionCode = promotionCode;
         this.startDate = startDate;
         this.zipcode = zipcode;
-        this.adds = adds;
+        this.cardPay = cardPay;
+        this.total = total;
+    }
+
+    public Integer getCarId() {
+        return carId;
+    }
+
+    public void setCarId(Integer carId) {
+        this.carId = carId;
     }
 
     public String getAddress() {
@@ -82,11 +94,11 @@ public class Reservation {
         this.email = email;
     }
 
-    public Date getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
@@ -114,12 +126,12 @@ public class Reservation {
         this.nip = nip;
     }
 
-    public String getPersonID() {
-        return personID;
+    public String getPersonid() {
+        return personid;
     }
 
-    public void setPersonID(String personID) {
-        this.personID = personID;
+    public void setPersonid(String personid) {
+        this.personid = personid;
     }
 
     public String getPhone() {
@@ -130,6 +142,14 @@ public class Reservation {
         this.phone = phone;
     }
 
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
     public String getPromotionCode() {
         return promotionCode;
     }
@@ -138,11 +158,11 @@ public class Reservation {
         this.promotionCode = promotionCode;
     }
 
-    public Date getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
@@ -154,11 +174,19 @@ public class Reservation {
         this.zipcode = zipcode;
     }
 
-    public List<Adds> getAdds() {
-        return adds;
+    public Boolean getCardPay() {
+        return cardPay;
     }
 
-    public void setAdds(List<Adds> adds) {
-        this.adds = adds;
+    public void setCardPay(Boolean cardPay) {
+        this.cardPay = cardPay;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
     }
 }
