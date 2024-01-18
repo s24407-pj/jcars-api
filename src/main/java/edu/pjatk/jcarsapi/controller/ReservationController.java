@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class ReservationController {
     private final ReservationService reservationService;
 
@@ -39,7 +40,7 @@ public class ReservationController {
 
 
 
-        reservationService.save(reservation);
+        //reservationService.save(reservation);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

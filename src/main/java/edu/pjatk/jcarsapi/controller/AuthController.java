@@ -71,7 +71,12 @@ public class AuthController {
                     .collect(Collectors.toList());
 
             return ResponseEntity.ok(new JwtResponse(token, userDetails.getId(), userDetails.getEmail(), roles));
-        } catch (Exception e) {
+        }
+        catch (BadCredentialsException e)
+        {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Nieprawidłowy login lub hasło.");
+        }
+        catch (Exception e) {
             return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }

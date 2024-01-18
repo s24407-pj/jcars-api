@@ -5,12 +5,14 @@ import edu.pjatk.jcarsapi.model.Car;
 import edu.pjatk.jcarsapi.service.CarService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class CarController {
 
     private final CarService carService;
