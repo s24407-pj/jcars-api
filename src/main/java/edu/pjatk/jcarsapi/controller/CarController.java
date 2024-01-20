@@ -39,6 +39,7 @@ public class CarController {
     }
 
     @PostMapping("/cars")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> addCar(@RequestBody Car car) {
 
         //if (car.getName() == null || car.getCategory() == null) {
@@ -51,6 +52,7 @@ public class CarController {
     }
 
     @PutMapping("/cars/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Car> updateCar(@PathVariable Integer id, @RequestBody Car car) {
 
         if (carService.getById(id).isEmpty()) {
@@ -65,6 +67,7 @@ public class CarController {
     }
 
     @DeleteMapping("/cars/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteCar(@PathVariable Integer id) {
 
         if (carService.getById(id).isEmpty()) {

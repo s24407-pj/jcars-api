@@ -5,6 +5,7 @@ import edu.pjatk.jcarsapi.model.Reservation;
 import edu.pjatk.jcarsapi.service.ReservationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,11 +21,13 @@ public class ReservationController {
     }
 
     @GetMapping("/reservations")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<List<Reservation>> getAllReservations() {
         return new ResponseEntity<>(reservationService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/reservations/{id}")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<Reservation> getReservationById(@PathVariable Integer id) {
         Optional<Reservation> reservation = reservationService.getById(id);
 
@@ -36,6 +39,7 @@ public class ReservationController {
     }
 
     @PostMapping("/reservations")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<?> addReservation(@RequestBody Reservation reservation) {
 
 
@@ -46,6 +50,7 @@ public class ReservationController {
     }
 
     @PutMapping("/reservations/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Reservation> updateReservation(@PathVariable Integer id, @RequestBody Reservation reservation) {
 
         if (reservationService.getById(id).isEmpty()) {
@@ -60,6 +65,7 @@ public class ReservationController {
     }
 
     @DeleteMapping("/reservations/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteReservation(@PathVariable Integer id) {
 
         if (reservationService.getById(id).isEmpty()) {

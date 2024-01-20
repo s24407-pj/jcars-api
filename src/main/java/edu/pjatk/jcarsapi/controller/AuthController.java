@@ -1,32 +1,26 @@
 package edu.pjatk.jcarsapi.controller;
 
-import edu.pjatk.jcarsapi.model.Enums.ERoles;
-import edu.pjatk.jcarsapi.model.Role;
 import edu.pjatk.jcarsapi.model.User;
 import edu.pjatk.jcarsapi.model.UserDetailsImpl;
 import edu.pjatk.jcarsapi.model.request.SignupRequest;
+import edu.pjatk.jcarsapi.model.response.ApiResponse;
 import edu.pjatk.jcarsapi.model.response.JwtResponse;
-import edu.pjatk.jcarsapi.model.response.Login;
 import edu.pjatk.jcarsapi.repository.RolesRepository;
 import edu.pjatk.jcarsapi.repository.UserRepository;
 import edu.pjatk.jcarsapi.service.UserService;
 import edu.pjatk.jcarsapi.util.JwtUtil;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -37,7 +31,6 @@ public class AuthController {
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
     private final RolesRepository rolesRepository;
-
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
     private final JwtUtil jwtUtil;
@@ -64,20 +57,18 @@ public class AuthController {
 
             UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-            Login loginRes = new Login(userDetails.getEmail(), token);
-
             List<String> roles = userDetails.getAuthorities().stream()
-                    .map(item -> item.getAuthority())
+                    .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toList());
 
-            return ResponseEntity.ok(new JwtResponse(token, userDetails.getId(), userDetails.getEmail(), roles));
+            return ResponseEntity.ok(new ApiResponse(true, "Logowanie przebiegło pomyślnie", new JwtResponse(token, userDetails.getId(), userDetails.getEmail(), roles)));
         }
         catch (BadCredentialsException e)
         {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Nieprawidłowy login lub hasło.");
+            return ResponseEntity.ok(new ApiResponse(false, "Nieprawidłowy login lub hasło.", null));
         }
         catch (Exception e) {
-            return ResponseEntity.internalServerError().body(e.getMessage());
+            return ResponseEntity.ok(new ApiResponse(false, e.getMessage(), null));
         }
     }
 
@@ -87,33 +78,10 @@ public class AuthController {
         Optional<User> user = userRepository.findByEmail(signupRequest.getEmail());
 
         if (user.isPresent()) {
-            return ResponseEntity.badRequest().body("Email is already taken");
+            return ResponseEntity.ok(new ApiResponse(false, "Email is already taken", null));
         }
 
-
         try {
-            Set<String> strRole = signupRequest.getRole();
-            Set<Role> roles = new HashSet<>();
-
-            if (strRole == null) {
-                Role userRole = rolesRepository.findByName(ERoles.ROLE_USER)
-                        .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
-                roles.add(userRole);
-            } else {
-                strRole.forEach(role -> {
-                    switch (role) {
-                        case "admin":
-                            Role adminRole = rolesRepository.findByName(ERoles.ROLE_ADMIN)
-                                    .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
-                            roles.add(adminRole);
-                            break;
-                        default:
-                            Role userRole = rolesRepository.findByName(ERoles.ROLE_USER)
-                                    .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
-                            roles.add(userRole);
-                    }
-                });
-            }
             User user1 = new User();
             user1.setFirstName(signupRequest.getFirstName());
             user1.setLastName(signupRequest.getLastName());
@@ -122,12 +90,11 @@ public class AuthController {
             user1.setAddress(signupRequest.getAddress());
             user1.setPhoneNumber(signupRequest.getPhoneNumber());
             user1.setHasDrivingLicense(signupRequest.getHasDrivingLicense());
-            user1.setRoles(roles);
             userRepository.save(user1);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.ok(new ApiResponse(false, e.getMessage(), null));
         }
 
-        return ResponseEntity.ok("Successfully registered!");
+        return ResponseEntity.ok(new ApiResponse(true, "Successfully registered!", null));
     }
 }

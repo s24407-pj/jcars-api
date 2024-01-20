@@ -5,6 +5,7 @@ import edu.pjatk.jcarsapi.model.CarBrand;
 import edu.pjatk.jcarsapi.service.CarBrandService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class CarBrandController {
     }
 
     @DeleteMapping("/car-brands/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteCarBrand(@PathVariable Integer id) {
 
         if (carBrandService.getById(id).isEmpty()) {
@@ -36,6 +38,7 @@ public class CarBrandController {
     }
 
     @PostMapping("/car-brands")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> addCarBrand(@RequestBody CarBrand carBrand) {
 
 

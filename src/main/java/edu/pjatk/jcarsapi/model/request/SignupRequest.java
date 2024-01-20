@@ -27,8 +27,6 @@ public class SignupRequest {
     @NotNull
     private Boolean hasDrivingLicense;
 
-    private Set<String> role;
-
     public SignupRequest() {
     }
 
@@ -40,15 +38,6 @@ public class SignupRequest {
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.hasDrivingLicense = hasDrivingLicense;
-        this.role = role;
-    }
-
-    public Set<String> getRole() {
-        return role;
-    }
-
-    public void setRole(Set<String> role) {
-        this.role = role;
     }
 
     public String getFirstName() {
