@@ -1,15 +1,9 @@
 package edu.pjatk.jcarsapi.service;
 
 import edu.pjatk.jcarsapi.model.User;
-import edu.pjatk.jcarsapi.model.UserDetailsImpl;
 import edu.pjatk.jcarsapi.repository.UserRepository;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,12 +18,9 @@ public class UserService {
     }
 
 
-
-    public boolean verifyDrivingLicense(Integer id, String hash) {
-        Optional<User> user = userRepository.findById(id);
-        if (drivingLicenseService.checkDrivingLicense(hash) && user.isPresent()) {
-            user.get().setHasDrivingLicense(true);
-            userRepository.save(user.get());
+    public Boolean verifyDrivingLicense(Integer id, String hash) {
+        if (userRepository.existsById(id) && drivingLicenseService.checkDrivingLicense(hash)) {
+            userRepository.updateHasDrivingLicenseById(true, id);
             return true;
         }
         return false;

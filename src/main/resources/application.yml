@@ -9,9 +9,9 @@ url:
 
 spring:
   datasource:
-    username: admin
-    password: password
-    url: jdbc:mysql://localhost:3306/jcars
+    username: jcars
+    password: qK,.424/+=0
+    url: jdbc:mysql://jauto.pl:3306/jcars
   security:
     user:
       password: "Test12345_"
