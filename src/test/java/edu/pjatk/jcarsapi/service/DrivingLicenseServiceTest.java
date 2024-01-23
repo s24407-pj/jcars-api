@@ -64,6 +64,4 @@ class DrivingLicenseServiceTest {
         Boolean result = underTest.checkDrivingLicense("validHash");
         assertFalse(result);
     }
-
-
 }

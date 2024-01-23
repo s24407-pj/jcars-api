@@ -30,7 +30,7 @@ public class DrivingLicenseService {
                         .build())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, // replace method reference with lambda
+                .onStatus(HttpStatusCode::is4xxClientError,
                         clientResponse -> Mono.error(new ResponseStatusException(
                                 HttpStatus.BAD_REQUEST, "Bad Request"
                         )))
