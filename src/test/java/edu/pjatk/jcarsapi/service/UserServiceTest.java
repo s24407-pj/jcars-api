@@ -2,6 +2,7 @@ package edu.pjatk.jcarsapi.service;
 
 import edu.pjatk.jcarsapi.model.Enums.ERoles;
 import edu.pjatk.jcarsapi.model.User;
+import edu.pjatk.jcarsapi.model.Verified;
 import edu.pjatk.jcarsapi.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,8 +32,8 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        dummyUser = new User(1, "John", "Doe", "john.doe@example.com", "password123", "1234567890", "123 Sample Street", true, ERoles.ROLE_USER);
-        dummyUser2 = new User(2, "John", "Doe", "2john.doe@example.com", "password123", "1234567890", "123 Sample Street", false, ERoles.ROLE_USER);
+        dummyUser = new User(1, "John", "Doe", "john.doe@example.com", "password123", "1234567890", "123 Sample Street", true, ERoles.ROLE_USER,new Verified());
+        dummyUser2 = new User(2, "John", "Doe", "2john.doe@example.com", "password123", "1234567890", "123 Sample Street", false, ERoles.ROLE_USER,new Verified());
     }
 
     @Test

@@ -45,9 +45,9 @@ class ReservationServiceTest {
                 "This is a dummy car"
         );
         CarModel model = new CarModel(1, "name", new CarBrand(1, "name"));
-        User user = new User(1, "John", "Doe", "john.doe@example.com", "password123", "1234567890", "123 Sample Street", true, ERoles.ROLE_USER);
-        dummyReservation1 = new Reservation(1, user, car, LocalDateTime.now(), LocalDateTime.MAX, Reservation.ReservationStatus.ACTIVE);
-        dummyReservation2 = new Reservation(2, user, car, LocalDateTime.now(), LocalDateTime.MAX, Reservation.ReservationStatus.CANCELED);
+        User user = new User(1, "John", "Doe", "john.doe@example.com", "password123", "1234567890", "123 Sample Street", true, ERoles.ROLE_USER,new Verified());
+        dummyReservation1 = new Reservation(1, user, car, LocalDateTime.now(), LocalDateTime.MAX, true, 100.00, Reservation.ReservationStatus.ACTIVE, List.of(new Add(1, "sds", "sd", 20)));
+        dummyReservation2 = new Reservation(2, user, car, LocalDateTime.now(), LocalDateTime.MAX, true, 100.00, Reservation.ReservationStatus.CANCELED, List.of(new Add(1, "sds", "sd", 20)));
     }
 
     @Test

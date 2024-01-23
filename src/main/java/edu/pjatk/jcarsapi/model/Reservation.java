@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Entity
 @Table(name = "reservation")
@@ -31,7 +30,7 @@ public class Reservation {
     private Boolean paidCard;
 
     @Column(nullable = false)
-    private Double total;
+    private Double totalPrice;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -49,13 +48,13 @@ public class Reservation {
         this.startDate = startDate;
         this.endDate = endDate;
         this.paidCard = paidCard;
-        this.total = total;
+        this.totalPrice = total;
         this.status = status;
         this.adds = adds;
     }
 
-    public Double getTotal() {
-        return total;
+    public Double getTotalPrice() {
+        return totalPrice;
     }
 
     public Boolean getPaidCard() {
@@ -66,8 +65,8 @@ public class Reservation {
         this.paidCard = paidCard;
     }
 
-    public void setTotal(Double total) {
-        this.total = total;
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public Integer getId() {

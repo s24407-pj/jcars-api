@@ -1,23 +1,18 @@
 package edu.pjatk.jcarsapi.controller;
 
 import edu.pjatk.jcarsapi.exception.ResourceNotFoundException;
-import edu.pjatk.jcarsapi.model.Add;
 import edu.pjatk.jcarsapi.model.Car;
 import edu.pjatk.jcarsapi.model.Reservation;
 import edu.pjatk.jcarsapi.model.User;
-import edu.pjatk.jcarsapi.model.request.Reservation.Adds;
 import edu.pjatk.jcarsapi.model.request.Reservation.ReservationRequest;
-import edu.pjatk.jcarsapi.repository.CarRepository;
 import edu.pjatk.jcarsapi.repository.UserRepository;
 import edu.pjatk.jcarsapi.service.CarService;
 import edu.pjatk.jcarsapi.service.ReservationService;
-import edu.pjatk.jcarsapi.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.ResourceAccessException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,7 +62,7 @@ public class ReservationController {
                 reservation.setStartDate(reservationRequest.getReservation().getStartDate());
                 reservation.setEndDate(reservationRequest.getReservation().getEndDate());
                 reservation.setStatus(Reservation.ReservationStatus.PAID);
-                reservation.setTotal(reservationRequest.getReservation().getTotal());
+                reservation.setTotalPrice(reservationRequest.getReservation().getTotal());
                 reservation.setPaidCard(reservationRequest.getReservation().getCardPay());
                 reservation.setAdds(reservationRequest.getAdds());
                 reservationService.save(reservation);
