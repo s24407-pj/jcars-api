@@ -1,7 +1,10 @@
 package edu.pjatk.jcarsapi.model;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "reservation")
@@ -25,16 +28,46 @@ public class Reservation {
     private LocalDateTime endDate;
 
     @Column(nullable = false)
+    private Boolean paidCard;
+
+    @Column(nullable = false)
+    private Double total;
+
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
-    public Reservation(Integer id, User user, Car car, LocalDateTime startDate, LocalDateTime endDate, ReservationStatus status) {
+    @Column(nullable = false)
+    @ManyToMany
+    private List<Add> adds;
+
+
+    public Reservation(Integer id, User user, Car car, LocalDateTime startDate, LocalDateTime endDate, Boolean paidCard, Double total, ReservationStatus status, List<Add> adds) {
         this.id = id;
         this.user = user;
         this.car = car;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.paidCard = paidCard;
+        this.total = total;
         this.status = status;
+        this.adds = adds;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public Boolean getPaidCard() {
+        return paidCard;
+    }
+
+    public void setPaidCard(Boolean paidCard) {
+        this.paidCard = paidCard;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
     }
 
     public Integer getId() {
@@ -83,6 +116,14 @@ public class Reservation {
 
     public void setStatus(ReservationStatus status) {
         this.status = status;
+    }
+
+    public List<Add> getAdds() {
+        return adds;
+    }
+
+    public void setAdds(List<Add> adds) {
+        this.adds = adds;
     }
 
     public Reservation() {

@@ -5,14 +5,15 @@ import edu.pjatk.jcarsapi.model.Car;
 import edu.pjatk.jcarsapi.service.CarService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@CrossOrigin(origins = "*")
+@RequestMapping("/api/jcars")
 public class CarController {
 
     private final CarService carService;
@@ -38,8 +39,36 @@ public class CarController {
         }
     }
 
+    @GetMapping("/cars/model/{id}")
+    public ResponseEntity<List<Car>> getCarByModelsId(@PathVariable Integer id) {
+
+        List<Car> carList = carService.getAll();
+        List<Car> updatedList = new ArrayList<>();
+
+        carList.forEach(car -> {
+            if (car.getModel().getId().equals(id)) {
+                updatedList.add(car);
+            }
+        });
+
+        return new ResponseEntity<>(updatedList, HttpStatus.OK);
+    }
+
+    @GetMapping("/cars/brand/{id}")
+    public ResponseEntity<List<Car>> getCarByBrandId(@PathVariable Integer id) {
+
+        List<Car> carList = carService.getAll();
+        List<Car> updatedList = new ArrayList<>();
+
+        carList.forEach(car -> {
+            if (car.getModel().getBrand().getId().equals(id)) {
+                updatedList.add(car);
+            }
+        });
+        return ResponseEntity.ok(updatedList);
+    }
+
     @PostMapping("/cars")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> addCar(@RequestBody Car car) {
 
         //if (car.getName() == null || car.getCategory() == null) {
@@ -52,7 +81,6 @@ public class CarController {
     }
 
     @PutMapping("/cars/{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Car> updateCar(@PathVariable Integer id, @RequestBody Car car) {
 
         if (carService.getById(id).isEmpty()) {
@@ -67,7 +95,6 @@ public class CarController {
     }
 
     @DeleteMapping("/cars/{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteCar(@PathVariable Integer id) {
 
         if (carService.getById(id).isEmpty()) {

@@ -11,7 +11,6 @@ public class CarBrand {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     private Integer id;
 
     @Column(name = "name", nullable = false, length = 32)

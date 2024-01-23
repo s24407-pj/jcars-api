@@ -12,24 +12,18 @@ import java.util.stream.Collectors;
 public class UserDetailsImpl implements UserDetails {
 
     private Integer id;
-
     private String firstname;
-
     private String lastname;
-
     private String email;
-
     @JsonIgnore
     private String password;
     private String address;
-
     private String phone;
-
     private Boolean hasDrivingLicense;
-
     private Collection<? extends GrantedAuthority> authorities;
+    private Verified verified;
 
-    public UserDetailsImpl(Integer id, String firstname, String lastname, String email, String password, String address, String phone, Boolean hasDrivingLicense, Collection<? extends GrantedAuthority> authorities) {
+    public UserDetailsImpl(Integer id, String firstname, String lastname, String email, String password, String address, String phone, Boolean hasDrivingLicense, Collection<? extends GrantedAuthority> authorities, Verified verified) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -39,6 +33,7 @@ public class UserDetailsImpl implements UserDetails {
         this.phone = phone;
         this.hasDrivingLicense = hasDrivingLicense;
         this.authorities = authorities;
+        this.verified = verified;
     }
 
     public static UserDetailsImpl build(User user) {
@@ -53,9 +48,10 @@ public class UserDetailsImpl implements UserDetails {
                 user.getAddress(),
                 user.getPhoneNumber(),
                 user.getHasDrivingLicense(),
-                authorities
-        );
+                authorities,
+                user.getVerified());
     }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -114,6 +110,10 @@ public class UserDetailsImpl implements UserDetails {
 
     public String getPhone() {
         return phone;
+    }
+
+    public Verified getVerified() {
+        return verified;
     }
 
     public Boolean getHasDrivingLicense() {

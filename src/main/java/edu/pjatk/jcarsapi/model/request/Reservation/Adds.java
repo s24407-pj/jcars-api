@@ -1,32 +1,17 @@
-package edu.pjatk.jcarsapi.model;
+package edu.pjatk.jcarsapi.model.request.Reservation;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-
-@Entity
-@Table(name = "adds")
-public class Add {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Adds {
     private Integer id;
-
-    @NotNull
     private String title;
-
     private String description;
 
-    @NotNull
-    private Integer price;
-
-    public Add() {
+    public Adds() {
     }
 
-    public Add(Integer id, String title, String description, Integer price) {
+    public Adds(Integer id, String title, String description) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.price = price;
     }
 
     public Integer getId() {
@@ -51,13 +36,5 @@ public class Add {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Integer getPrice() {
-        return price;
-    }
-
-    public void setPrice(Integer price) {
-        this.price = price;
     }
 }

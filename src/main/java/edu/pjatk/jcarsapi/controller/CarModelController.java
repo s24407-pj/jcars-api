@@ -5,13 +5,14 @@ import edu.pjatk.jcarsapi.model.CarModel;
 import edu.pjatk.jcarsapi.service.CarModelService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@CrossOrigin(origins = "*")
+@RequestMapping("/api/jcars")
 public class CarModelController {
     CarModelService carModelService;
 
@@ -24,8 +25,23 @@ public class CarModelController {
         return new ResponseEntity<>(carModelService.getAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/car-models/brand/{id}")
+    public ResponseEntity<List<CarModel>> getAllCarModelsByBrand(@PathVariable Integer id) {
+
+        List<CarModel> carModels = carModelService.getAll();
+
+        List<CarModel> updateCarModels = new ArrayList<>();
+
+        carModels.forEach(carModel -> {
+            if (carModel.getBrand().getId().equals(id)) {
+                updateCarModels.add(carModel);
+            }
+        });
+
+        return new ResponseEntity<>(updateCarModels, HttpStatus.OK);
+    }
+
     @DeleteMapping("/car-models/{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteCarBrand(@PathVariable Integer id) {
 
         if (carModelService.getById(id).isEmpty()) {
@@ -38,7 +54,6 @@ public class CarModelController {
     }
 
     @PostMapping("/car-models")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> addCarModel(@RequestBody CarModel carModel) {
 
 
