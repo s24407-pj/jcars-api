@@ -2,28 +2,30 @@ package edu.pjatk.jcarsapi.util;
 
 
 import edu.pjatk.jcarsapi.model.UserDetailsImpl;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.stream.Collectors;
-
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 
 
 @Component
 public class JwtUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
-    private final String secretKey = "====================megakociksamolocik============================";
-    private final long accessTokenValidity = 86400000;
-
+    private final String SECRET_KEY = "====================megakociksamolocik============================";
 
     public String generateJwtToken(Authentication authentication) {
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
@@ -33,14 +35,17 @@ public class JwtUtil {
                 .claim("roles", userPrincipal.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
                         .collect(Collectors.toList()))
-                .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + accessTokenValidity))
-                .signWith(key(), SignatureAlgorithm.HS256)
+                .setIssuedAt(Date.from(Instant.now()))
+                .setExpiration(
+                        Date.from(
+                                Instant.now()
+                                        .plus(15, ChronoUnit.DAYS)))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public Key key() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
     }
 
     public String getUserNameFromJwtToken(String token) {
@@ -48,14 +53,39 @@ public class JwtUtil {
                 .parseClaimsJws(token).getBody().getSubject();
     }
 
-    public boolean validateJwtToken(String authToken) {
+    public boolean validateJwtToken(String authToken, String username) {
         try {
-            Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJws(authToken);
-            return true;
+            String subject = getSubject(authToken);
+            return subject.equals(username) && !isTokenExpired(authToken);
         } catch (JwtException | IllegalArgumentException e) {
             logger.error("Invalid JWT token: {}", e.getMessage());
         }
         return false;
+    }
+
+    private boolean isTokenExpired(String jwt) {
+        return getClaims(jwt)
+                .getExpiration()
+                .before(
+                        Date.from(
+                                Instant.now()
+                        ));
+    }
+
+    private Claims getClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    private Key getSigningKey() {
+        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+    }
+
+    public String getSubject(String token) {
+        return getClaims(token).getSubject();
     }
 
 }

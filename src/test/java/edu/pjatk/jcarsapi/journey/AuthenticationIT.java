@@ -78,7 +78,7 @@ public class AuthenticationIT extends AbstractTestContainers {
 
         var responseBody = result.getResponseBody();
 
-        assertThat(jwtUtil.validateJwtToken(responseBody.token())).isTrue();
+        assertThat(jwtUtil.validateJwtToken(responseBody.token(),responseBody.email())).isTrue();
         assertThat(responseBody.email()).isEqualTo(customerRegistrationRequest.getEmail());
 
     }

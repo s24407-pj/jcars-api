@@ -1,5 +1,6 @@
 package edu.pjatk.jcarsapi.util;
 
+import edu.pjatk.jcarsapi.service.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
@@ -14,6 +15,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -27,8 +29,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtil jwtUtil;
 
-    //@Autowired
-    //private UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
 
     private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 
@@ -43,7 +45,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         try {
             String jwt = parseJwt(request);
-            if (jwt != null && jwtUtil.validateJwtToken(jwt)) {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(jwtUtil.getSubject(jwt));
+            if (jwt != null && jwtUtil.validateJwtToken(jwt,userDetails.getUsername())) {
                 String email = jwtUtil.getUserNameFromJwtToken(jwt);
 
                 Claims claims = Jwts.parserBuilder()
