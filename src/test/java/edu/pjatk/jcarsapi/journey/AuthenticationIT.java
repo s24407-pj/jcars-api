@@ -1,6 +1,6 @@
-/*
 package edu.pjatk.jcarsapi.journey;
 
+import edu.pjatk.jcarsapi.AbstractTestContainers;
 import edu.pjatk.jcarsapi.model.Enums.ERoles;
 import edu.pjatk.jcarsapi.model.request.LoginRequest;
 import edu.pjatk.jcarsapi.model.request.SignupRequest;
@@ -15,14 +15,11 @@ import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-public class AuthenticationIT {
+public class AuthenticationIT extends AbstractTestContainers {
     @Autowired
     private WebTestClient webTestClient;
     @Autowired
@@ -79,21 +76,10 @@ public class AuthenticationIT {
                 })
                 .returnResult();
 
-        String jwtToken = result.getResponseHeaders()
-                .get(AUTHORIZATION)
-                .get(0);
+        var responseBody = result.getResponseBody();
 
-        var customerDTO = result.getResponseBody().customerDTO();
+        assertThat(jwtUtil.validateJwtToken(responseBody.token())).isTrue();
+        assertThat(responseBody.email()).isEqualTo(customerRegistrationRequest.getEmail());
 
-        assertThat(jwtUtil.isTokenValid(
-                jwtToken,
-                customerDTO.username()));
-
-        assertThat(customerDTO.email()).isEqualTo(customerRegistrationRequest.email());
-        assertThat(customerDTO.age()).isEqualTo(customerRegistrationRequest.age());
-        assertThat(customerDTO.name()).isEqualTo(customerRegistrationRequest.name());
-        assertThat(customerDTO.username()).isEqualTo(customerRegistrationRequest.email());
-        assertThat(customerDTO.roles()).isEqualTo(List.of("ROLE_USER"));
     }
 }
-*/

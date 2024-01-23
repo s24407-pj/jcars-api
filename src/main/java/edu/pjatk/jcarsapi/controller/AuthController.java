@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +46,7 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> login(@RequestBody edu.pjatk.jcarsapi.model.request.LoginRequest loginReq) {
-        try {
+
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginReq.email(), loginReq.password())
             );
@@ -59,13 +60,11 @@ public class AuthController {
             /*Login loginRes = new Login(userDetails.getEmail(), token);*/
 
             List<String> roles = userDetails.getAuthorities().stream()
-                    .map(item -> item.getAuthority())
+                    .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toList());
 
             return ResponseEntity.ok(new JwtResponse(userDetails.getFirstname(), userDetails.getLastname(), userDetails.getAddress(), userDetails.getPhone(), token, userDetails.getId(), userDetails.getEmail(), roles, userDetails.getVerified()));
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(e.getMessage());
-        }
+
     }
 
     @PostMapping(value = "/signup")
