@@ -21,8 +21,8 @@ import io.jsonwebtoken.security.Keys;
 public class JwtUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
-    private String secretKey = "====================megakociksamolocik============================";
-    private long accessTokenValidity = 86400000;
+    private final String secretKey = "====================megakociksamolocik============================";
+    private final long accessTokenValidity = 86400000;
 
 
     public String generateJwtToken(Authentication authentication) {

@@ -1,13 +1,11 @@
 package edu.pjatk.jcarsapi.model.request;
 
 
-import edu.pjatk.jcarsapi.model.Role;
+import edu.pjatk.jcarsapi.model.Enums.ERoles;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
-import java.util.Set;
 
 public class SignupRequest {
     @NotBlank
@@ -30,7 +28,7 @@ public class SignupRequest {
     public SignupRequest() {
     }
 
-    public SignupRequest(String firstName, String lastName, String email, String password, String phoneNumber, String address, Boolean hasDrivingLicense, Set<String> role) {
+    public SignupRequest(String firstName, String lastName, String email, String password, String phoneNumber, String address, Boolean hasDrivingLicense, ERoles role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

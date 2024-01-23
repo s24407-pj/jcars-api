@@ -1,9 +1,8 @@
 package edu.pjatk.jcarsapi.model;
 
+import edu.pjatk.jcarsapi.model.Enums.ERoles;
 import jakarta.persistence.*;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -34,9 +33,9 @@ public class User {
     @Column(name = "has_driving_license", nullable = false)
     private Boolean hasDrivingLicense = false;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    @Column(name = "role", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ERoles role;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinTable(name = "user_verified", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "verified_id"))
@@ -46,7 +45,7 @@ public class User {
     public User() {
     }
 
-    public User(Integer id, String firstName, String lastName, String email, String password, String phoneNumber, String address, Boolean hasDrivingLicense, Set<Role> roles, Verified verified) {
+    public User(Integer id, String firstName, String lastName, String email, String password, String phoneNumber, String address, Boolean hasDrivingLicense, ERoles role,Verified verified) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -55,10 +54,9 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.hasDrivingLicense = hasDrivingLicense;
-        this.roles = roles;
+        this.role = role;
         this.verified = verified;
     }
-
     public Verified getVerified() {
         return verified;
     }
@@ -66,13 +64,12 @@ public class User {
     public void setVerified(Verified verified) {
         this.verified = verified;
     }
-
-    public Set<Role> getRoles() {
-        return roles;
+    public ERoles getRole() {
+        return role;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRole(ERoles role) {
+        this.role = role;
     }
 
     public Integer getId() {

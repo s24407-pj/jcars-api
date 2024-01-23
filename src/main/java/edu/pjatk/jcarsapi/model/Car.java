@@ -38,9 +38,12 @@ public class Car {
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
+    @Column(name = "price_per_day",nullable = false)
+    private Integer pricePerDay;
+
     private String description;
 
-    public Car(Integer id, CarModel model, Integer year, String registrationPlate, Integer deposit, Integer rentalPrice, List<Attribute> attributes, Boolean isAvailable, Integer milage, String imageUrl, String description) {
+    public Car(Integer id, CarModel model, Integer year, String registrationPlate, Integer deposit, Integer rentalPrice, List<Attribute> attributes, Boolean isAvailable, Integer milage, String imageUrl,Integer pricePerDay, String description) {
         this.id = id;
         this.model = model;
         this.year = year;
@@ -51,6 +54,7 @@ public class Car {
         this.isAvailable = isAvailable;
         this.milage = milage;
         this.imageUrl = imageUrl;
+        this.pricePerDay = pricePerDay;
         this.description = description;
     }
 
@@ -64,6 +68,18 @@ public class Car {
 
     public Car() {
 
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getPricePerDay() {
+        return pricePerDay;
+    }
+
+    public void setPricePerDay(Integer pricePerDay) {
+        this.pricePerDay = pricePerDay;
     }
 
     public Integer getDeposit() {

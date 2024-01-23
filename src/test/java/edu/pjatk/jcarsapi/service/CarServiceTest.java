@@ -42,6 +42,7 @@ class CarServiceTest {
                 true,
                 10000,
                 "https://dummy.com/car",
+                40,
                 "This is a dummy car"
         );
         car2 = new Car(
@@ -55,6 +56,7 @@ class CarServiceTest {
                 true,
                 10200,
                 "https://duddmmy.com/car",
+                40,
                 "This ids a dummy car"
         );
 

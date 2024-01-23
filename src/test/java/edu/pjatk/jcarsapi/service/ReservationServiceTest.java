@@ -1,6 +1,7 @@
 package edu.pjatk.jcarsapi.service;
 
 import edu.pjatk.jcarsapi.model.*;
+import edu.pjatk.jcarsapi.model.Enums.ERoles;
 import edu.pjatk.jcarsapi.repository.ReservationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,10 +41,11 @@ class ReservationServiceTest {
                 true,
                 10000,
                 "https://dummy.com/car",
+                40,
                 "This is a dummy car"
         );
         CarModel model = new CarModel(1, "name", new CarBrand(1, "name"));
-        User user = new User(1, "John", "Doe", "john.doe@example.com", "password123", "1234567890", "123 Sample Street", true);
+        User user = new User(1, "John", "Doe", "john.doe@example.com", "password123", "1234567890", "123 Sample Street", true, ERoles.ROLE_USER);
         dummyReservation1 = new Reservation(1, user, car, LocalDateTime.now(), LocalDateTime.MAX, Reservation.ReservationStatus.ACTIVE);
         dummyReservation2 = new Reservation(2, user, car, LocalDateTime.now(), LocalDateTime.MAX, Reservation.ReservationStatus.CANCELED);
     }
