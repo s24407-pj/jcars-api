@@ -45,8 +45,12 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         try {
             String jwt = parseJwt(request);
+            if (jwt == null){
+                filterChain.doFilter(request, response);
+                return;
+            }
             UserDetails userDetails = userDetailsService.loadUserByUsername(jwtUtil.getSubject(jwt));
-            if (jwt != null && jwtUtil.validateJwtToken(jwt,userDetails.getUsername())) {
+            if (jwtUtil.validateJwtToken(jwt,userDetails.getUsername())) {
                 String email = jwtUtil.getUserNameFromJwtToken(jwt);
 
                 Claims claims = Jwts.parserBuilder()
