@@ -46,8 +46,7 @@ public class User {
     public User() {
     }
 
-    public User(Integer id, String firstName, String lastName, String email, String password, String phoneNumber, String address, Boolean hasDrivingLicense, Set<Role> roles, Verified verified) {
-        this.id = id;
+    public User(String firstName, String lastName, String email, String password, String phoneNumber, String address, Boolean hasDrivingLicense) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -55,8 +54,6 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.hasDrivingLicense = hasDrivingLicense;
-        this.roles = roles;
-        this.verified = verified;
     }
 
     public Verified getVerified() {
