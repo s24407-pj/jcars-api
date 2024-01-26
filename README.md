@@ -8,7 +8,7 @@ JCars to nowoczesna aplikacja internetowa umożliwiająca rezerwację i wynajem 
 - Zarządzanie kontami użytkowników
 - Przegląd i zarządzanie flotą samochodów
 - System autoryzacji i zarządzania rolami użytkowników
-
+ 
 ## Technologie
 - Backend: Java Spring Boot, MySQL
 - Frontend: React
