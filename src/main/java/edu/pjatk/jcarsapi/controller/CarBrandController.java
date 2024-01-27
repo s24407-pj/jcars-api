@@ -25,7 +25,7 @@ public class CarBrandController {
     }
 
     @DeleteMapping("/car-brands/{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteCarBrand(@PathVariable Integer id) {
 
         if (carBrandService.getById(id).isEmpty()) {
@@ -38,7 +38,7 @@ public class CarBrandController {
     }
 
     @PostMapping("/car-brands")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> addCarBrand(@RequestBody CarBrand carBrand) {
 
 

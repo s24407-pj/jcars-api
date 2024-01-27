@@ -25,7 +25,7 @@ public class CarModelController {
     }
 
     @DeleteMapping("/car-models/{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteCarBrand(@PathVariable Integer id) {
 
         if (carModelService.getById(id).isEmpty()) {
@@ -38,7 +38,7 @@ public class CarModelController {
     }
 
     @PostMapping("/car-models")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> addCarModel(@RequestBody CarModel carModel) {
 
 
