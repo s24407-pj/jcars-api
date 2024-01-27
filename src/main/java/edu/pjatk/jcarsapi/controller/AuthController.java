@@ -10,6 +10,7 @@ import edu.pjatk.jcarsapi.repository.UserRepository;
 import edu.pjatk.jcarsapi.service.UserService;
 import edu.pjatk.jcarsapi.util.JwtUtil;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -61,14 +62,14 @@ public class AuthController {
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toList());
 
-            return ResponseEntity.ok(new ApiResponse(true, "Logowanie przebiegło pomyślnie", new JwtResponse(token, userDetails.getId(), userDetails.getEmail(), roles)));
+            return ResponseEntity.ok(new JwtResponse(token, userDetails.getId(), userDetails.getEmail(), roles));
         }
         catch (BadCredentialsException e)
         {
-            return ResponseEntity.ok(new ApiResponse(false, "Nieprawidłowy login lub hasło.", null));
+            return new ResponseEntity<>("Nieprawidłowy login lub hasło.", HttpStatus.UNAUTHORIZED);
         }
         catch (Exception e) {
-            return ResponseEntity.ok(new ApiResponse(false, e.getMessage(), null));
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
@@ -78,7 +79,7 @@ public class AuthController {
         Optional<User> user = userRepository.findByEmail(signupRequest.getEmail());
 
         if (user.isPresent()) {
-            return ResponseEntity.ok(new ApiResponse(false, "Email is already taken", null));
+            return ResponseEntity.badRequest().body("Email is already taken");
         }
 
         try {
@@ -92,9 +93,9 @@ public class AuthController {
             user1.setHasDrivingLicense(signupRequest.getHasDrivingLicense());
             userRepository.save(user1);
         } catch (Exception e) {
-            return ResponseEntity.ok(new ApiResponse(false, e.getMessage(), null));
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
 
-        return ResponseEntity.ok(new ApiResponse(true, "Successfully registered!", null));
+        return ResponseEntity.ok("Successfully registered!");
     }
 }
